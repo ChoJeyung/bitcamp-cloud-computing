@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitcamp.pms.dao.NamecardDao">
+
+	<!-- 컬럼명과 객체의 프로퍼티 명을 연결한다. -->
+	<resultMap type="Namecard" id="NamecardMap">
+		<id column="name" property="name" />
+		<result column="email" property="email" />
+		<result column="cellphonenum" property="cellphonenum" />
+		<result column="phonenum" property="phonenum" />
+		<result column="faxnum" property="faxnum" />
+		<result column="memo" property="memo" />
+	</resultMap>
+
+	<select id="selectList" resultMap="NamecardMap"
+		parameterType="map">
+		select name, cellphonenum, phonenum, faxnum, email, memo
+		from
+		assign_namecard
+		<if test="startIndex != null and pageSize != null">
+			limit #{startIndex}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="selectOne" resultMap="NamecardMap"
+		parameterType="string">
+		select name, cellphonenum, phonenum, faxnum, email, memo
+		from assign_namecard
+		where name=#{value}
+	</select>
+
+	<update id="update" parameterType="Namecard">
+		update assign_namecard set
+		cellphonenum=#{cellphonenum},
+		phonenum=#{phonenum},
+		faxnum=#{faxnum},
+		email=#{email},
+		memo=#{memo}
+		where name=#{name}
+	</update>
+
+	<delete id="delete" parameterType="string">
+		delete from assign_namecard
+		where name=#{value}
+	</delete>
+
+	<insert id="insert" parameterType="Namecard">
+		insert into
+		assign_namecard(name, cellphonenum, phonenum, faxnum, email, memo)
+		values(#{name},#{cellphonenum},#{phonenum},#{faxnum},#{email},#{memo})
+	</insert>
+
+	<select id="countAll" resultType="int">
+		select count(*) from
+		assign_namecard
+	</select>
+
+</mapper>
+
+
+
+
